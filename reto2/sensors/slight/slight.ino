@@ -22,7 +22,7 @@ void setup() {
 }
 
 void loop() {
-  double intensity = getLightIntensity;
+  double intensity = getLightIntensity();
   Serial.print(intensity);
   Serial.println(" lux");
   delay(1000);
