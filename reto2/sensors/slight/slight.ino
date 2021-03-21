@@ -17,7 +17,7 @@ double getLightIntensity () {
 // --- END LIGHT SENSOR ---
 
 void setup() {
-  pinMode(sensorPin, INPUT);
+  pinMode(light_sensor, INPUT);
   Serial.begin(9600); //sets serial port for communication
 }
 
