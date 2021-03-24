@@ -1,14 +1,27 @@
+#include <WiFi.h>
 
-#include <ESP8266WiFi.h>
-
-const char* ssid     = "usuario";
-const char* password = "contrasena";
+char* ssid     = "usr";
+char* password = "pwd";
 
 
 WiFiServer server(80);
 
 
 String header;
+
+#define light_sensor A0
+// --- LIGHT SENSOR ---
+const double k = 5.0 / 1024;
+const double luxFactor = 500000;
+const double R2 = 10000;
+const double LowLightLimit = 200;
+const double B = 1.3 * pow(10.0, 7);
+const double m = -1.4;
+
+int numOfValues = 5;
+double lightValuesSum = 0;
+double fLightValue = 0;
+// --- END LIGHT SENSOR ---
 
 int temp = 0;
 int hum = 0;
@@ -34,20 +47,31 @@ void setup() {
   server.begin();
 }
 
+double getLightIntensity () {
+  double V2 = k * analogRead(light_sensor);
+  double R1 = (5.0 / V2 - 1) * R2;
+  double lux = B * pow(R1, m);
+  return lux;
+}
+
 String getTemp(){
   temp+=1;
   return (String)temp; 
 }
-
 
 String getHum(){
   hum+=2;
   return (String)hum; 
 }
 
-String getCo2(){
-  co2+=3;
-  return (String)co2; 
+String getLight(){
+  for (int i = 0; i < numOfValues; i++) {
+    lightValuesSum += getLightIntensity();
+    delay(500);
+  }
+  fLightValue = lightValuesSum / numOfValues;
+  lightValuesSum = 0;
+  return (String)fLightValue; 
 }
 
 void loop(){
@@ -90,10 +114,9 @@ void loop(){
             //HUM
             client.println("<div class=\"card\" style=\"float:left; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); width: 32%; background: white; margin-left: 10px\"> <img src=\"https://img.favpng.com/2/17/24/moisture-logo-png-favpng-wtAsi7hi39qU9KV6FRiXUmF1T.jpg\" alt=\"Hum\" style=\"width:400px; height: 350px\"> <div class=\"container\" style=\" background: white\"> <h4><b>Humedad</b></h4> <p>" + getHum() + " Humedad </p> </div></div>");
   
-            //CO2
-            client.println("<div class=\"card\" style=\"float:left; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); width: 32%; background: white; margin-left: 10px\"> <img src=\"https://img.flaticon.com/icons/png/512/1504/1504946.png?size=1200x630f&pad=10,10,10,10&ext=png&bg=FFFFFFFF\" alt=\"Co2\" style=\"width:450px; height: 350px\"> <div class=\"container\" style=\" background: white\"> <h4><b>Carbono</b></h4> <p>" + getCo2() + " Co2 </p> </div></div>");
+            //Light
+            client.println("<div class=\"card\" style=\"float:left; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); width: 32%; background: white; margin-left: 10px\"> <img src=\"https://img.flaticon.com/icons/png/512/1504/1504946.png?size=1200x630f&pad=10,10,10,10&ext=png&bg=FFFFFFFF\" alt=\"Co2\" style=\"width:450px; height: 350px\"> <div class=\"container\" style=\" background: white\"> <h4><b>Carbono</b></h4> <p>" + getLight() + " Lux </p> </div></div>");
 
-            
             client.println("</body></html>");            
             client.println();
             break;
