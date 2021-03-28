@@ -1,8 +1,6 @@
 #include <WiFi.h>
 #include <DHT.h>
-
-char* ssid     = "note_kevin";
-char* password = "notewifi";
+#include "secrets.h"
 
 
 // Definimos el pin digital donde se conecta el sensor
@@ -43,8 +41,8 @@ const long timeoutTime = 2000;
 void setup() {
   Serial.begin(115200);
   Serial.print("Connecting to ");
-  Serial.println(ssid);
-  WiFi.begin(ssid, password);
+  Serial.println(SECRET_SSID);
+  WiFi.begin(SECRET_SSID, SECRET_PASS);
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
