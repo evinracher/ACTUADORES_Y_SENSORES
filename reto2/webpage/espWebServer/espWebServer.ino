@@ -1,11 +1,11 @@
-#include <WiFi.h>
+#include <WiFi101.h>
 
-char* ssid     = "usr";
-char* password = "pwd";
+char* ssid     = "note_kevin";
+char* password = "notewifi";
 
 
 WiFiServer server(80);
-
+WiFiClient client;
 
 String header;
 
@@ -32,7 +32,7 @@ unsigned long previousTime = 0;
 const long timeoutTime = 2000;
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(9600);
   Serial.print("Connecting to ");
   Serial.println(ssid);
   WiFi.begin(ssid, password);
@@ -74,10 +74,9 @@ String getLight(){
   return (String)fLightValue; 
 }
 
-void loop(){
-  WiFiClient client = server.available();   
+void loop(){   
 
-  if (client) {                             
+  if (server.available()) {                             
     Serial.println("New Client.");          
     String currentLine = "";                
     currentTime = millis();
