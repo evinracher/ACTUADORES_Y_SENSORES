@@ -17,6 +17,7 @@ WiFiServer server(80);
 String header;
 
 #define light_sensor A0
+#define rain_sensor A1
 // --- LIGHT SENSOR ---
 const double k = 5.0 / 1024;
 const double luxFactor = 500000;
@@ -51,15 +52,17 @@ void setup() {
   Serial.println("WiFi connected.");
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
+  pinMode(light_sensor, INPUT);
+  pinMode(rain_sensor, INPUT);
   server.begin();
   dht.begin();
 }
 
-double getLightIntensity () {
+String getLightIntensity () {
   double V2 = k * analogRead(light_sensor);
   double R1 = (5.0 / V2 - 1) * R2;
   double lux = B * pow(R1, m);
-  return lux;
+  return (String)lux;
 }
 
 String getTemp() {
@@ -74,23 +77,18 @@ String getHum() {
   return (String)h;
 }
 
-String getLight() {
+String getRain() {
+  int range = map(analogRead(rain_sensor), 0, 1024, 0, 3);
 
-  for (int i = 0; i < 5; i++) {
-    double currValue = getLightIntensity();
-    Serial.println(getLightIntensity());
-    if (currValue > 0) {
-      lightValuesSum += getLightIntensity();
-    } else {
-      numOfValues--;
-    }
-    delay(500);
+  switch (range) {
+    case 0:    // Sensor getting wet
+      return "Lloviendo";
+    case 1:
+      return "Llovizna";
+    case 2:
+    case 3:    // Sensor dry
+      return "Sin lluvia";
   }
-  fLightValue = lightValuesSum / numOfValues;
-  lightValuesSum = 0;
-  numOfValues = 5;
-  Serial.println(fLightValue);
-  return (String)fLightValue;
 }
 
 void loop() {
@@ -127,14 +125,18 @@ void loop() {
             client.println("<body><h1 style=\"color: white\">Reto 2</h1>");
 
             // Display current state, and ON/OFF buttons for GPIO 5
-            //TEMP
+
+            // TEMP
             client.println("<div class=\"card\" style=\"float:left; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); width: 32%; background: white; margin-left: 25px\"> <img src=\"https://img.favpng.com/1/4/13/thermometer-temperature-computer-icons-symbol-png-favpng-nXxuwXmB4TBXtTy9tHS0Un4J8.jpg\" alt=\"Temp\" style=\"width:450px; height: 350px\"> <div class=\"container\" style=\" background: white\"> <h4><b>Temperature</b></h4> <p>" + getTemp() + " Celsius </p> </div></div>");
 
-            //HUM
+            // HUM
             client.println("<div class=\"card\" style=\"float:left; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); width: 32%; background: white; margin-left: 10px\"> <img src=\"https://img.favpng.com/2/17/24/moisture-logo-png-favpng-wtAsi7hi39qU9KV6FRiXUmF1T.jpg\" alt=\"Hum\" style=\"width:400px; height: 350px\"> <div class=\"container\" style=\" background: white\"> <h4><b>Humedad</b></h4> <p>" + getHum() + " Humedad </p> </div></div>");
 
-            //Light
-            client.println("<div class=\"card\" style=\"float:left; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); width: 32%; background: white; margin-left: 10px\"> <img src=\"https://img.flaticon.com/icons/png/512/1504/1504946.png?size=1200x630f&pad=10,10,10,10&ext=png&bg=FFFFFFFF\" alt=\"Co2\" style=\"width:450px; height: 350px\"> <div class=\"container\" style=\" background: white\"> <h4><b>Carbono</b></h4> <p>" + getLight() + " Lux </p> </div></div>");
+            // Light
+            client.println("<div class=\"card\" style=\"float:left; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); width: 32%; background: white; margin-left: 10px\"> <img src=\"https://img.flaticon.com/icons/png/512/1504/1504946.png?size=1200x630f&pad=10,10,10,10&ext=png&bg=FFFFFFFF\" alt=\"Co2\" style=\"width:450px; height: 350px\"> <div class=\"container\" style=\" background: white\"> <h4><b>Carbono</b></h4> <p>" + getLightIntensity() + " Lux </p> </div></div>");
+
+            // Rain
+            client.println("<div class=\"card\" style=\"float:left; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); width: 32%; background: white; margin-left: 10px\"> <img src=\"https://img.flaticon.com/icons/png/512/1504/1504946.png?size=1200x630f&pad=10,10,10,10&ext=png&bg=FFFFFFFF\" alt=\"Co2\" style=\"width:450px; height: 350px\"> <div class=\"container\" style=\" background: white\"> <h4><b>Carbono</b></h4> <p>" + getRain() + "</p> </div></div>");
 
             client.println("</body></html>");
             client.println();
