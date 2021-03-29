@@ -25,15 +25,7 @@ const double R2 = 220;
 const double LowLightLimit = 200;
 const double B = 1.3 * pow(10.0, 7);
 const double m = -1.4;
-
-int numOfValues = 5;
-double lightValuesSum = 0;
-double fLightValue = 0;
 // --- END LIGHT SENSOR ---
-
-int temp = 0;
-int hum = 0;
-int co2 = 0;
 
 unsigned long currentTime = millis();
 unsigned long previousTime = 0;
@@ -52,41 +44,44 @@ void setup() {
   Serial.println("WiFi connected.");
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
-  pinMode(light_sensor, INPUT);
-  pinMode(rain_sensor, INPUT);
   server.begin();
   dht.begin();
 }
 
-String getLightIntensity () {
+String getLightIntensity() {
   double V2 = k * analogRead(light_sensor);
   double R1 = (5.0 / V2 - 1) * R2;
-  double lux = B * pow(R1, m);
+  double lux = B * pow(R1, m) + 50;
+  Serial.print("Lux: ");
+  Serial.println(lux);
   return (String)lux;
 }
 
 String getTemp() {
   float t = dht.readTemperature();
+  Serial.print("Temp: ");
   Serial.println(t);
   return (String)t;
 }
 
 String getHum() {
   float h = dht.readHumidity();
+  Serial.print("Hum: ");
   Serial.println(h);
   return (String)h;
 }
 
 String getRain() {
-  int range = map(analogRead(rain_sensor), 0, 1024, 0, 3);
-
+  int sensorData = analogRead(rain_sensor);
+  Serial.print("Rain: ");
+  Serial.println(sensorData);
+  int range = map(sensorData, 0, 4095, 0, 3);
   switch (range) {
     case 0:    // Sensor getting wet
       return "Lloviendo";
     case 1:
       return "Llovizna";
-    case 2:
-    case 3:    // Sensor dry
+    default:
       return "Sin lluvia";
   }
 }
