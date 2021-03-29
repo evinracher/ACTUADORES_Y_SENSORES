@@ -119,20 +119,20 @@ void loop() {
             // Web Page Heading
             client.println("<body><h1 style=\"color: white\">Reto 2</h1>");
 
-            // Display current state, and ON/OFF buttons for GPIO 5
+            // Display current state, and ON/OFF buttons for GPIO 5  
+            //TEMP
+            client.println("<div style=\"display:flex; height: auto; width: auto; overflow:auto; flex-wrap: wrap; \">");
+            client.println("<div class=\"card\" style=\"float:right; height:auto; justify-content: space-around; flex-flow: row wrap; margin-left: 10px; margin-top: 50px; rgba(0,0,0,0.2); width: 32%; background: white;\"> <img src=\"https://img.favpng.com/1/4/13/thermometer-temperature-computer-icons-symbol-png-favpng-nXxuwXmB4TBXtTy9tHS0Un4J8.jpg\" alt=\"Temp\" style=\"width:450px; height: 350px\"> <div class=\"container\" style=\" background: white\"> <h4><b>Temperatura</b></h4> <p>" + getTemp() + " Celsius </p> </div></div>");
 
-            // TEMP
-            client.println("<div class=\"card\" style=\"float:left; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); width: 32%; background: white; margin-left: 25px\"> <img src=\"https://img.favpng.com/1/4/13/thermometer-temperature-computer-icons-symbol-png-favpng-nXxuwXmB4TBXtTy9tHS0Un4J8.jpg\" alt=\"Temp\" style=\"width:450px; height: 350px\"> <div class=\"container\" style=\" background: white\"> <h4><b>Temperature</b></h4> <p>" + getTemp() + " Celsius </p> </div></div>");
+            //HUM
+            client.println("<div class=\"card\" style=\"float:right; height:auto; justify-content: space-around; flex-flow: row wrap; margin-left: 10px; margin-top: 50px; rgba(0,0,0,0.2); width: 32%; background: white;\"> <img src=\"https://img.favpng.com/2/17/24/moisture-logo-png-favpng-wtAsi7hi39qU9KV6FRiXUmF1T.jpg\" alt=\"Hum\" style=\"width:400px; height: 350px\"> <div class=\"container\" style=\" background: white\"> <h4><b>Humedad</b></h4> <p>" + getHum() + " % </p> </div></div>");
+ 
+            //Light
+            client.println("<div class=\"card\" style=\"float:right; height:auto; justify-content: space-around; flex-flow: row wrap; margin-left: 10px; margin-top: 50px; rgba(0,0,0,0.2); width: 32%; background: white;\"> <img src=\"https://w7.pngwing.com/pngs/941/101/png-transparent-light-computer-icons-idea-logo-innovation-electricity-black-and-white.png\" alt=\"Light\" style=\"width:450px; height: 350px\"> <div class=\"container\" style=\" background: white\"> <h4><b>Luz</b></h4> <p>" + getLightIntensity() + " Lums </p> </div></div>");
 
-            // HUM
-            client.println("<div class=\"card\" style=\"float:left; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); width: 32%; background: white; margin-left: 10px\"> <img src=\"https://img.favpng.com/2/17/24/moisture-logo-png-favpng-wtAsi7hi39qU9KV6FRiXUmF1T.jpg\" alt=\"Hum\" style=\"width:400px; height: 350px\"> <div class=\"container\" style=\" background: white\"> <h4><b>Humedad</b></h4> <p>" + getHum() + " Humedad </p> </div></div>");
-
-            // Light
-            client.println("<div class=\"card\" style=\"float:left; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); width: 32%; background: white; margin-left: 10px\"> <img src=\"https://img.flaticon.com/icons/png/512/1504/1504946.png?size=1200x630f&pad=10,10,10,10&ext=png&bg=FFFFFFFF\" alt=\"Co2\" style=\"width:450px; height: 350px\"> <div class=\"container\" style=\" background: white\"> <h4><b>Carbono</b></h4> <p>" + getLightIntensity() + " Lux </p> </div></div>");
-
-            // Rain
-            client.println("<div class=\"card\" style=\"float:left; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); width: 32%; background: white; margin-left: 10px\"> <img src=\"https://img.flaticon.com/icons/png/512/1504/1504946.png?size=1200x630f&pad=10,10,10,10&ext=png&bg=FFFFFFFF\" alt=\"Co2\" style=\"width:450px; height: 350px\"> <div class=\"container\" style=\" background: white\"> <h4><b>Carbono</b></h4> <p>" + getRain() + "</p> </div></div>");
-
+            //Light
+            client.println("<div class=\"card\" style=\"float:right; height:auto; justify-content: space-around; flex-flow: row wrap; margin-left: 10px; margin-top: 50px; rgba(0,0,0,0.2); width: 32%; background: white;\"> <img src=\"https://w7.pngwing.com/pngs/779/697/png-transparent-drop-computer-icons-encapsulated-postscript-color-raindrop-miscellaneous-angle-triangle.png\" alt=\"Lluvia\" style=\"width:450px; height: 350px\"> <div class=\"container\" style=\" background: white\"> <h4><b>Lluvia</b></h4> <p> Lloviendo " + getRain() + "  </p> </div></div>");
+            client.println("</div>");
             client.println("</body></html>");
             client.println();
             break;
