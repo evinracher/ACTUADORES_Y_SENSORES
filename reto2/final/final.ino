@@ -130,8 +130,8 @@ void loop() {
             //Light
             client.println("<div class=\"card\" style=\"float:right; height:auto; justify-content: space-around; flex-flow: row wrap; margin-left: 10px; margin-top: 50px; rgba(0,0,0,0.2); width: 32%; background: white;\"> <img src=\"https://w7.pngwing.com/pngs/941/101/png-transparent-light-computer-icons-idea-logo-innovation-electricity-black-and-white.png\" alt=\"Light\" style=\"width:450px; height: 350px\"> <div class=\"container\" style=\" background: white\"> <h4><b>Luz</b></h4> <p>" + getLightIntensity() + " Lums </p> </div></div>");
 
-            //Light
-            client.println("<div class=\"card\" style=\"float:right; height:auto; justify-content: space-around; flex-flow: row wrap; margin-left: 10px; margin-top: 50px; rgba(0,0,0,0.2); width: 32%; background: white;\"> <img src=\"https://w7.pngwing.com/pngs/779/697/png-transparent-drop-computer-icons-encapsulated-postscript-color-raindrop-miscellaneous-angle-triangle.png\" alt=\"Lluvia\" style=\"width:450px; height: 350px\"> <div class=\"container\" style=\" background: white\"> <h4><b>Lluvia</b></h4> <p> Lloviendo " + getRain() + "  </p> </div></div>");
+            //Rain
+            client.println("<div class=\"card\" style=\"float:right; height:auto; justify-content: space-around; flex-flow: row wrap; margin-left: 10px; margin-top: 50px; rgba(0,0,0,0.2); width: 32%; background: white;\"> <img src=\"https://w7.pngwing.com/pngs/779/697/png-transparent-drop-computer-icons-encapsulated-postscript-color-raindrop-miscellaneous-angle-triangle.png\" alt=\"Lluvia\" style=\"width:450px; height: 350px\"> <div class=\"container\" style=\" background: white\"> <h4><b>Lluvia</b></h4> <p> " + getRain() + "  </p> </div></div>");
             client.println("</div>");
             client.println("</body></html>");
             client.println();
